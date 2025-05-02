@@ -312,10 +312,8 @@ function startTimer() {
 }
 
 function startFallingManAnimation() {
-  // Clear any existing content
   fallingManContainer.innerHTML = "";
 
-  // Add the SVG man
   fallingManContainer.innerHTML = `
     <svg version="1.1" id="falling-man-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       viewBox="0 0 491.395 491.395" style="enable-background:new 0 0 491.395 491.395;" xml:space="preserve" width="50" height="50">
@@ -355,29 +353,24 @@ function startFallingManAnimation() {
 
   const fallingMan = document.getElementById("falling-man-svg");
 
-  // Position the man at the top center
   fallingMan.style.position = "absolute";
   fallingMan.style.left = "50%";
   fallingMan.style.transform = "translateX(-50%)";
   fallingMan.style.top = "0";
   fallingMan.style.transition = "top 0.1s linear";
 
-  // Start falling animation based on time left
   fallingManInterval = setInterval(() => {
     if (!gameActive) return;
 
-    // Calculate current position based on time left (60s to 0s)
     const progress = 1 - timeLeft / 60;
     const newTop = progress * (containerHeight - 65);
 
     fallingMan.style.top = `${newTop}px`;
 
-    // Rotate the man as he falls to make it look more natural
     fallingMan.style.transform = `translateX(-50%) rotate(${
       progress * 180
     }deg)`;
 
-    // Check if reached the ground
     if (newTop >= groundPosition - 50) {
       clearInterval(fallingManInterval);
       endGame(false);
@@ -394,11 +387,10 @@ startBtn.addEventListener("click", () => {
 
   startTimer();
   currentQuestionInLevel = 0;
-  startFallingManAnimation(); // Replace vortex animation with falling man animation
+  startFallingManAnimation();
   loadNextQuestion();
 });
 
-// Load the next question in current level
 function loadNextQuestion() {
   const challengeIndex = (level - 1) * 3 + currentQuestionInLevel;
 
@@ -428,7 +420,6 @@ function loadNextQuestion() {
 
 // Show level completion message
 function levelCompleted() {
-  // Reset timer for next level
   clearInterval(timer);
   timeLeft = 60;
   timerDisplay.textContent = timeLeft;
@@ -497,7 +488,6 @@ function showFinalResults() {
 // Validate Answer
 function validateCode(selectedCode, correctCode) {
   if (selectedCode === correctCode) {
-    // Correct answer
     score += level * 10;
     scoreDisplay.textContent = score;
     currentQuestionInLevel++;
@@ -518,7 +508,6 @@ function validateCode(selectedCode, correctCode) {
       }
     });
 
-    // Flash timer red
     timerDisplay.style.color = "red";
     setTimeout(() => {
       timerDisplay.style.color = "";
@@ -531,7 +520,6 @@ function validateCode(selectedCode, correctCode) {
   }
 }
 
-// End Game - now redirects to showFinalResults
 function endGame(win) {
   if (win) {
     showFinalResults();
@@ -539,7 +527,6 @@ function endGame(win) {
     clearInterval(timer);
     gameActive = false;
 
-    // Hide game UI elements
     document.querySelectorAll(".game-ui").forEach((el) => {
       el.classList.add("game-ui-hidden");
     });
@@ -560,7 +547,6 @@ function endGame(win) {
   }
 }
 
-// Reset (unchanged)
 function resetGame() {
   clearInterval(timer);
   clearInterval(fallingManInterval);
@@ -576,7 +562,6 @@ function resetGame() {
   codeSnippetsContainer.innerHTML = "";
   currentQuestionInLevel = 0;
 
-  // Show game UI elements again
   document.querySelectorAll(".game-ui").forEach((el) => {
     el.classList.remove("game-ui-hidden");
   });
